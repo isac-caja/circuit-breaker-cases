@@ -1,0 +1,21 @@
+
+service:
+  wait_time: 1
+  return_status: 2
+
+request_mode: async
+requests:
+  - service_name: "alpha.com"
+    path: "beta"
+    timeout_limit: 3
+    circuit_breaker_type: 'fixed'
+    circuit_breaker_allow_failures: 20
+    
+  - service_name: "charlie.com"
+    path: "delta"
+    timeout_limit: 4
+    circuit_breaker_type: 'percentage'
+    circuit_breaker_max_requests: 10
+    circuit_breaker_factor: 0.3
+    circuit_breaker_interval: 200
+    circuit_breaker_timeout: 20
