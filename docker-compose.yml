@@ -1,0 +1,92 @@
+version: "3.8"
+
+x-var: &limit_memory
+  30M
+
+x-var: &reservation_memory
+  15M
+
+services:
+  boundary:
+    image: breaker-case:test
+    container_name: boundary
+    environment: 
+      - CONFIG_FILE_PATH=/resources/config.boundary.yaml
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: *limit_memory
+        reservations:
+          memory: *reservation_memory
+
+  alpha:
+    image: breaker-case:test
+    container_name: alpha
+    environment: 
+      - CONFIG_FILE_PATH=/resources/config.alpha.yaml
+    deploy:
+      resources:
+        limits:
+          memory: *limit_memory
+        reservations:
+          memory: *reservation_memory
+    depends_on: 
+      - boundary
+
+  beta:
+    image: breaker-case:test
+    container_name: beta
+    environment: 
+      - CONFIG_FILE_PATH=/resources/config.beta.yaml
+    deploy:
+      resources:
+        limits:
+          memory: *limit_memory
+        reservations:
+          memory: *reservation_memory
+    depends_on: 
+      - alpha
+
+  slower1:
+    image: breaker-case:test
+    container_name: slower1
+    environment: 
+      - CONFIG_FILE_PATH=/resources/config.slower1.yaml
+    deploy:
+      resources:
+        limits:
+          memory: *limit_memory
+        reservations:
+          memory: *reservation_memory
+    depends_on: 
+      - beta
+  
+  slower2:
+    image: breaker-case:test
+    container_name: slower2
+    environment: 
+      - CONFIG_FILE_PATH=/resources/config.slower2.yaml
+    deploy:
+      resources:
+        limits:
+          memory: *limit_memory
+        reservations:
+          memory: *reservation_memory
+    depends_on: 
+      - slower1
+
+  slower3:
+    image: breaker-case:test
+    container_name: slower3
+    environment: 
+      - CONFIG_FILE_PATH=/resources/config.slower3.yaml
+    deploy:
+      resources:
+        limits:
+          memory: *limit_memory
+        reservations:
+          memory: *reservation_memory
+    depends_on: 
+      - slower2

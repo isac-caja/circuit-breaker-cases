@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -42,9 +43,9 @@ type YamlLoader struct {
 }
 
 func New() (*service.Config, error) {
-	f := os.Getenv("CONFIG_FILE_PATH")
-	if f == "" {
-		f = "/Users/iscajades/Projects/circuit-breaker-cases/resources/config.test.yaml"
+	var f string
+	if f = os.Getenv("CONFIG_FILE_PATH"); f == "" {
+		panic(errors.New("Set the env var CONFIG_FILE_PATH.\nexport CONFIG_FILE_PATH=${HOME}/Projects/circuit-breaker-cases/resources/config.test.yaml"))
 	}
 	loader := NewYamlLoader(f)
 	return loader.Load()

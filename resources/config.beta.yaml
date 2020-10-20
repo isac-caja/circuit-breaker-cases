@@ -1,0 +1,8 @@
+
+service:
+  wait_time: 0
+
+requests:
+  - service_name: slower2:8080
+    path: "process"
+    limit_timeout: 100

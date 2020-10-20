@@ -1,0 +1,16 @@
+
+service:
+  wait_time: 0
+
+requests:
+  - service_name: beta:8080
+    path: "process"
+    limit_timeout: 100
+
+  - service_name: alpha:8080
+    path: "process"
+    limit_timeout: 100
+    circuit_breaker_type: 'fixed'
+    circuit_breaker_max_requests: 10
+    circuit_breaker_allow_failures: 250
+    circuit_breaker_interval: 300

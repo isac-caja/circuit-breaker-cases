@@ -1,0 +1,4 @@
+
+service:
+  wait_time: 500
+  return_status: 200

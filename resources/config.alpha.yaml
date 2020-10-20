@@ -1,0 +1,16 @@
+
+service:
+  wait_time: 0
+
+requests:
+  - service_name: slower1:8080
+    path: "process"
+    limit_timeout: 100
+
+  - service_name: slower2:8080
+    path: "process"
+    limit_timeout: 100
+
+  - service_name: slower3:8080
+    path: "process"
+    limit_timeout: 100
